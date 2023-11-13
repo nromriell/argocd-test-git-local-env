@@ -1,0 +1,6 @@
+charts
+Chart.lock
+.DS_Store
+local-env/charts
+test-deploy/charts
+test-values/values*.yaml

@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  labels:
+    app: gogs-app
+  name: git
+  namespace: git
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: gogs-app
+  serviceName: gogs-app
+  template:
+    metadata:
+      labels:
+        app: gogs-app
+    spec:
+      containers:
+      - image: gogs/gogs:latest
+        imagePullPolicy: IfNotPresent
+        name: gogs-app
+        resources: {}
+        volumeMounts:
+          - mountPath: /app/gogs/custom/conf/app.ini
+            name: gogs-config
+            subPath: app.ini
+        ports:
+          - containerPort: 3000
+            name: web
+            protocol: TCP
+          - containerPort: 22
+            name: ssh
+            protocol: TCP
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 30
+      volumes:
+        - name: gogs-config
+          configMap:
+            name: gogs-config

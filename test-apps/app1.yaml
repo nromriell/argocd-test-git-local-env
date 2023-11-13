@@ -1,0 +1,38 @@
+
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: my-appset
+  namespace: argocd
+spec:
+  goTemplate: true
+  generators:
+    # git generator, 'child' #1
+    - git:
+        repoURL: http://git.git.svc.cluster.local:3000/test-user/test-values.git
+        revision: HEAD
+        files:
+          - path: ./values-*.yaml
+  template:
+    metadata:
+      name: 'test-{{.path.filenameNormalized | replace "." "" }}'
+    spec:
+      project: default
+      sources:
+        - repoURL: http://git.git.svc.cluster.local:3000/test-user/test-deploy.git
+          targetRevision: HEAD
+          path: .
+          helm:
+            valueFiles:
+              - ./values.yaml
+              - $values/{{.path.filenameNormalized}}
+        - repoURL: http://git.git.svc.cluster.local:3000/test-user/test-values.git
+          targetRevision: HEAD
+          ref: values
+      destination:
+        server: https://kubernetes.default.svc
+        namespace: test
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
