@@ -4,3 +4,4 @@ Chart.lock
 local-env/charts
 test-deploy/charts
 test-values/values*.yaml
+gittoken.txt

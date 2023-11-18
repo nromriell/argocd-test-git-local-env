@@ -6,10 +6,16 @@ argo-cd:
   global:
     logging:
       level: debug
-    # image:
-    #   repository: "local/argocd"
-    #   tag: v1.0.0
-    #   imagePullPolicy: Never
+    image:
+      repository: "local/argocd"
+      tag: v1.0.0
+      imagePullPolicy: Never
+  dex:
+    image:
+      imagePullPolicy: IfNotPresent
+  redis:
+    image:
+      imagePullPolicy: IfNotPresent
   repoServer:
     metrics:
       enabled: true
@@ -37,5 +43,5 @@ kube-prometheus-stack:
             resources:
               requests:
                 storage: 1Gi
-          selector: {}
+            selector: {}
       serviceMonitorSelectorNilUsesHelmValues: false
