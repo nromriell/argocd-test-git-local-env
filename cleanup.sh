@@ -1,6 +1,6 @@
 #!/bin/bash
 
-minikube delete
+# minikube delete
 
 helm uninstall local-env -n argocd
 

@@ -1,15 +1,17 @@
 argo-cd:
   configs:
+    cm:
+      timeout.reconciliation: 5s
     params:
       reposerver.repo.cache.lock.enabled: "true"
       redis.compression: "none"
   global:
     logging:
       level: debug
-    image:
-      repository: "local/argocd"
-      tag: v1.0.0
-      imagePullPolicy: Never
+    # image:
+      # repository: "local/argocd"
+      # tag: v1.0.0
+      # imagePullPolicy: Never
   dex:
     image:
       imagePullPolicy: IfNotPresent
@@ -23,25 +25,25 @@ argo-cd:
         enabled: true
         interval: 5s
 
-kube-prometheus-stack:
-  crds:
-   enabled: true
-  grafana:
-    dashboards:
-      default:
-        argocd:
-          gnetId: 14584
-          revision: 1
-          datasource: Prometheus
-  prometheus:
-    prometheusSpec:
-      storageSpec:
-        volumeClaimTemplate:
-          spec:
-            storageClassName: standard
-            accessModes: ["ReadWriteOnce"]
-            resources:
-              requests:
-                storage: 1Gi
-            selector: {}
-      serviceMonitorSelectorNilUsesHelmValues: false
+# kube-prometheus-stack:
+#   crds:
+#    enabled: true
+#   grafana:
+#     dashboards:
+#       default:
+#         argocd:
+#           gnetId: 14584
+#           revision: 1
+#           datasource: Prometheus
+#   prometheus:
+#     prometheusSpec:
+#       storageSpec:
+#         volumeClaimTemplate:
+#           spec:
+#             storageClassName: standard
+#             accessModes: ["ReadWriteOnce"]
+#             resources:
+#               requests:
+#                 storage: 1Gi
+#             selector: {}
+#       serviceMonitorSelectorNilUsesHelmValues: false

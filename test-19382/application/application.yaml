@@ -1,0 +1,27 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: test-19382
+  namespace: argocd
+spec:
+  project: default
+  sources:
+    - helm:
+        releaseName: "test-19382-chart"
+        valueFiles:
+          - "values.yaml"
+          - "$values/values.yaml"
+      repoURL: http://git.git.svc.cluster.local:3000/test-user/test-19382.git
+      path: "./helm"
+      ref: HEAD
+    - repoURL: http://git.git.svc.cluster.local:3000/test-user/test-19382-values.git
+      path: .
+      targetRevision: HEAD
+      ref: values
+  destination:
+    server: "https://kubernetes.default.svc"
+    namespace: argocd
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true

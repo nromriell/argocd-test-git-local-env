@@ -46,12 +46,8 @@ fi
 AUTH_TOKEN=$(cat gittoken.txt)
 
 echo "Setting up test repos..."
-for repo in 'test-apps' 'test-deploy' 'test-values'; do
+for repo in 'test-19382' 'test-19382-values'; do
   cd $repo
-  if [[ "$repo" == "test-values" ]]; then
-    rm -f values-*.yaml
-    ./create-files.sh $TEST_APP_COUNT
-  fi
   # reset git state if it exists
   curl -X POST -H "Authorization: token $AUTH_TOKEN" -H "Content-Type: application/json" http://localhost:3000/api/v1/admin/users/test-user/repos --data '{"name":"'$repo'", "private": false}'
   rm -rf .git
@@ -60,7 +56,6 @@ for repo in 'test-apps' 'test-deploy' 'test-values'; do
   git commit -m "initial commit"
   git remote add origin "http://test-user:password-test@localhost:3000/test-user/$repo.git"
   git push -f -u origin main
-  rm -rf .git
   cd ..
 done
 
