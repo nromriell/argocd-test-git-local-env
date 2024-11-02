@@ -1,1 +1,3 @@
-replicaCount: "1"
+replicaCount: 1
+image:
+  repository: quay.io/argoproj/argocd
